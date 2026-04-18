@@ -1,39 +1,38 @@
 package com.educandoweb.course.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Instant;
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "tb_user")
-public class User implements Serializable {
+@Table(name = "tb_order")
+public class Order implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String  name;
-    private String email;
-    private String phone;
-    private String password;
-
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();
-
+    private Instant moment;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private User client;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
     }
 
     @Override
